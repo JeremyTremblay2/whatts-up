@@ -21,6 +21,14 @@
             <show_named_collections>1</show_named_collections>
             <show_named_collections_secrets>1</show_named_collections_secrets>
         </default>
+        <ec_admin>
+            <password>jk5Di!58fdG8dsC9</password>
+            <networks>
+                <ip>::/0</ip>
+            </networks>
+            <quota>default</quota>
+            <access_management>1</access_management>
+        </ec_admin>
     </users>
     <quotas>
         <default>
