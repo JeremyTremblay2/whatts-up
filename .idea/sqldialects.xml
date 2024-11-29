@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/fs/volumes/postgres/docker-entrypoint-initdb.d/1_create_and_insert_table_hacker_news.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/fs/volumes/postgres/docker-entrypoint-initdb.d/2_enable_index_and_replication.sql" dialect="PostgreSQL" />
+  </component>
+</project>
