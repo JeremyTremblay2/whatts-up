@@ -1,2 +1,3 @@
-# nouveaux-pirates
-Un site web contenant des informations sur nos amis les pirates
+# whatts-up
+
+Your way to charge your electrical car.
