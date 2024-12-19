@@ -22,7 +22,8 @@ DROP TABLE IF EXISTS $TABLE_NAME;
 
 CREATE TABLE $TABLE_NAME (
     id UInt32,
-    nom_amenageur Nullable(String) ,
+    nom_amenageur Nullable(String),
+    nom_operateur Nullable(String),
     nom_enseigne Nullable(String),
     id_station_itinerance Nullable(String),
     id_station_local Nullable(String),

@@ -13,8 +13,21 @@ services:
     ports:
       - "127.0.0.1:8123:8123"
       - "127.0.0.1:9000:9000"
-    networks:
-      - default
+
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    hostname: postgres
+    restart: always
+    volumes:
+      - ./fs/volumes/postgres/data:/var/lib/postgresql/data
+      - ./fs/volumes/postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ec_admin
+      POSTGRES_PASSWORD: jk5Di!58fdG8dsC9
+      POSTGRES_DB: default
 
   web:
     build: .
@@ -28,9 +41,3 @@ services:
       DB_USER: ec_admin
       DB_PASSWORD: jk5Di!58fdG8dsC9
       DB_NAME: default
-    networks:
-      - default
-
-networks:
-  default:
-    driver: bridge
