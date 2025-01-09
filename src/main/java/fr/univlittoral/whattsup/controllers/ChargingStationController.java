@@ -4,7 +4,6 @@ import fr.univlittoral.whattsup.mappers.ChargingStationMapper;
 import fr.univlittoral.whattsup.model.bo.ChargingStationBO;
 import fr.univlittoral.whattsup.model.dto.ChargingStationDTO;
 import fr.univlittoral.whattsup.services.ChargingStationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +17,6 @@ public class ChargingStationController {
 
     private final ChargingStationService service;
 
-    @Autowired
     public ChargingStationController(ChargingStationService service) {
         this.service = service;
     }

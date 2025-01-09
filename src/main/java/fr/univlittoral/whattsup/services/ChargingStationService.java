@@ -2,10 +2,9 @@ package fr.univlittoral.whattsup.services;
 
 import fr.univlittoral.whattsup.mappers.ChargingStationMapper;
 import fr.univlittoral.whattsup.model.bo.ChargingStationBO;
-import fr.univlittoral.whattsup.model.dao.postgres.PostgresChargingStationRepository;
 import fr.univlittoral.whattsup.model.dao.clickhouse.ClickHouseChargingStationRepository;
+import fr.univlittoral.whattsup.model.dao.postgres.PostgresChargingStationRepository;
 import fr.univlittoral.whattsup.model.entities.postgres.ChargingStationEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -19,7 +18,6 @@ public class ChargingStationService {
     private final PostgresChargingStationRepository postgresRepository;
     private final ClickHouseChargingStationRepository clickHouseRepository;
 
-    @Autowired
     public ChargingStationService(PostgresChargingStationRepository postgresRepository, ClickHouseChargingStationRepository clickHouseRepository) {
         this.postgresRepository = postgresRepository;
         this.clickHouseRepository = clickHouseRepository;
