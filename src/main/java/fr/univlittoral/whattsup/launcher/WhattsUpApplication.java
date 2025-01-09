@@ -1,9 +1,12 @@
-package fr.univlittoral.whattsup;
+package fr.univlittoral.whattsup.launcher;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
+@ComponentScan(basePackages = "fr.univlittoral.whattsup.configuration")
 public class WhattsUpApplication {
 
 	public static void main(String[] args) {

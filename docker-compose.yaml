@@ -27,16 +27,3 @@ services:
       POSTGRES_USER: ec_admin
       POSTGRES_PASSWORD: jk5Di!58fdG8dsC9
       POSTGRES_DB: default
-
-  web:
-    build: .
-    ports:
-      - "8080:8080"
-    depends_on:
-      - clickhouse
-    environment:
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_USER: ec_admin
-      DB_PASSWORD: jk5Di!58fdG8dsC9
-      DB_NAME: default
