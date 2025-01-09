@@ -14,12 +14,12 @@ public class ClickHouseChargingStationRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public ClickHouseChargingStationRepository(@Qualifier("") JdbcTemplate jdbcTemplate) {
+    public ClickHouseChargingStationRepository(@Qualifier("clickhouseJdbcTemplate") JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     public Collection<ChargingStationEntity> getAllChargingStations() {
-        String query = "SELECT name, id FROM ev_charging_stations";
+        String query = "SELECT * FROM ev_charging_stations";
         return jdbcTemplate.query(query, new BeanPropertyRowMapper<>(ChargingStationEntity.class));
     }
 }

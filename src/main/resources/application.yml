@@ -9,5 +9,5 @@ spring:
       password: jk5Di!58fdG8dsC9
       driver-class-name: org.postgresql.Driver
     clickhouse:
-      url: jdbc:clickhouse://localhost:8123/clickhouse
+      url: jdbc:clickhouse://localhost:8123
       driver-class-name: com.clickhouse.jdbc.ClickHouseDriver

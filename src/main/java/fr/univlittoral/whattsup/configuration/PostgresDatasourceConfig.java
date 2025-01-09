@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -20,7 +21,7 @@ import java.util.Objects;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        basePackageClasses = ChargingStationEntity.class,
+        basePackages = {"fr.univlittoral.whattsup.model.dao.postgres"},
         entityManagerFactoryRef = "postgresEntityManagerFactory",
         transactionManagerRef = "postgresTransactionManager"
 )
@@ -44,7 +45,7 @@ public class PostgresDatasourceConfig {
             EntityManagerFactoryBuilder builder) {
         return builder
                 .dataSource(dataSource)
-                .packages(ChargingStationEntity.class)
+                .packages("fr.univlittoral.whattsup.model.entities.postgres")
                 .build();
     }
 
@@ -52,5 +53,10 @@ public class PostgresDatasourceConfig {
     public PlatformTransactionManager postgresTransactionManager(
             @Qualifier("postgresEntityManagerFactory") LocalContainerEntityManagerFactoryBean postgresEntityManagerFactory) {
         return new JpaTransactionManager(Objects.requireNonNull(postgresEntityManagerFactory.getObject()));
+    }
+
+    @Bean(name = "postgresJdbcTemplate")
+    public JdbcTemplate postgresJdbcTemplate(@Qualifier("postgresDataSource") DataSource dataSource) {
+        return new JdbcTemplate(dataSource);
     }
 }

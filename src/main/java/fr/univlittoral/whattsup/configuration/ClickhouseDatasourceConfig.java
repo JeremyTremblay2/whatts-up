@@ -30,7 +30,7 @@ public class ClickhouseDatasourceConfig {
         return clickhouseDataSourceProperties().initializeDataSourceBuilder().build();
     }
 
-    @Bean
+    @Bean(name = "clickhouseJdbcTemplate")
     public JdbcTemplate clickhouseJdbcTemplate(@Qualifier("clickhouseDataSource") DataSource dataSource) {
         return new JdbcTemplate(dataSource);
     }
