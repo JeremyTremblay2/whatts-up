@@ -11,7 +11,6 @@ import { UserContext, useUserInfo } from "../UserContext"
 import { useIsLoading } from "../LoadingContext/index"
 import ScrollTop from "./ScrollTop"
 import LinearProgress from "@mui/material/LinearProgress"
-import { SearchContext } from "../SearchContext/index"
 
 const Layout = () => {
   const userInfo = useUserInfo()
@@ -21,8 +20,6 @@ const Layout = () => {
 
   const userContext = useContext(UserContext)
   const { isLoading } = useIsLoading()
-
-  const { searchTerm, setSearchTerm, setIsSearching } = useContext(SearchContext)
 
   useEffect(() => {
     if (userInfo === null) {
@@ -41,20 +38,8 @@ const Layout = () => {
 
   const handleClickDisconnect = () => {
     setAnchorEl(null)
-    setSearchTerm("")
     handleDisconnect(navigate)
     userContext.setRefreshUser(true)
-  }
-
-  const handleSearchChange = event => {
-    setSearchTerm(event.target.value)
-  }
-
-  const handleValidateSearch = e => {
-    e.preventDefault()
-    setIsSearching(true)
-    const searchTrimmed = searchTerm.trim()
-    if (searchTrimmed !== "") navigate("/search?q=" + searchTrimmed)
   }
 
   return (
@@ -66,46 +51,12 @@ const Layout = () => {
               <Link
                 to="/"
                 style={{ textDecoration: "none", color: "unset" }}
-                onClick={() => setSearchTerm("")}
               >
                 Whatts Up
               </Link>
             </Typography>
             {userInfo ? (
               <>
-                <form
-                  onSubmit={handleValidateSearch}
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    borderRadius: "50px",
-                    backgroundColor: "rgba(255, 255, 255, 0.15)",
-                    "&:hover": {
-                      backgroundColor: "rgba(255, 255, 255, 0.25)",
-                    },
-                    padding: "0 10px",
-                    gap: 0,
-                    width: "-webkit-fill-available",
-                    minWidth: "80px",
-                    maxWidth: "500px",
-                    height: "32px",
-                  }}
-                >
-                  <SearchIcon sx={{ fontSize: 22 }} />
-                  <InputBase
-                    name="search"
-                    placeholder="Search…"
-                    inputProps={{ "aria-label": "search" }}
-                    sx={{
-                      color: "inherit",
-                      paddingLeft: "6px",
-                    }}
-                    onChange={handleSearchChange}
-                    value={searchTerm}
-                    fullWidth={true}
-                  />
-                </form>
                 <div style={{ justifySelf: "end" }}>
                   <IconButton
                     size="large"

@@ -12,3 +12,12 @@ h1 {
   text-align: center;
   margin-top: 20px;
 }
+
+.cards-list {
+  width: 100%;
+  justify-content: center;
+  justify-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+}

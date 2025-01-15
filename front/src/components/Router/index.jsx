@@ -8,7 +8,6 @@ import Login from "../Login/index.jsx"
 import PrivateRoute from "./PrivateRoute.jsx"
 import { UserContextProvider } from "../UserContext"
 import { LoadingContextProvider } from "../LoadingContext/index"
-import { SearchContextProvider } from "../SearchContext/index"
 
 const router = createBrowserRouter([
   {
@@ -55,9 +54,7 @@ export default function Router() {
       <CssBaseline />
       <NotificationsProvider prefersDarkMode={prefersDarkMode} />
       <UserContextProvider>
-        <SearchContextProvider>
-          <RouterProvider router={router} />
-        </SearchContextProvider>
+        <RouterProvider router={router} />
       </UserContextProvider>
     </ThemeProvider>
   )
