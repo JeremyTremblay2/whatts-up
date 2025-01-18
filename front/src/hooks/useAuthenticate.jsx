@@ -3,12 +3,10 @@ import { enqueueSnackbar } from "notistack"
 import {
   API_BASE_URL,
   API_USER_LOGIN,
-  API_USER_REGISTER,
   API_USER_RENEW_TOKEN,
 } from "../utils/constants.js"
-import { useRefreshUserData } from "../components/UserContext"
 
-export const useAuthenticate = (body, isRegister) => {
+export const useAuthenticate = (body) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null)
   const [isAuthenticating, setIsAuthenticating] = useState(false)
   useEffect(() => {
@@ -20,7 +18,7 @@ export const useAuthenticate = (body, isRegister) => {
   const authentication = async () => {
     setIsAuthenticating(true)
     const response = await fetch(
-      `${API_BASE_URL}${isRegister ? API_USER_REGISTER : API_USER_LOGIN}`,
+      `${API_BASE_URL}${API_USER_LOGIN}`,
       {
         method: "POST",
         headers: {
@@ -45,8 +43,8 @@ export const useAuthenticate = (body, isRegister) => {
           enqueueSnackbar("Unknown error", { variant: "error" })
       }
     } else {
-      const jwt = await response.text()
-      localStorage.setItem("jwt", jwt)
+      const credentials = btoa(`${body.username}:${body.password}`)
+      localStorage.setItem("authToken", credentials)
       setIsAuthenticated(true)
       setIsAuthenticating(false)
       return true
@@ -66,7 +64,7 @@ export const useRenewToken = async body => {
     clearTimeout(tokenTimeout)
 
     tokenTimeout = setTimeout(() => {
-      if (localStorage.getItem("jwt")) {
+      if (localStorage.getItem("authToken")) {
         renewToken()
       }
       renewTokenHandler()
@@ -78,7 +76,7 @@ export const useRenewToken = async body => {
   const renewToken = async () => {
     const response = await fetch(`${API_BASE_URL}${API_USER_RENEW_TOKEN}`, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
       },
       body: JSON.stringify(body),
     })
@@ -92,8 +90,8 @@ export const useRenewToken = async body => {
           enqueueSnackbar("Unknown error", { variant: "error" })
       }
     } else {
-      const jwt = await response.text()
-      localStorage.setItem("jwt", jwt)
+      const authToken = await response.text()
+      localStorage.setItem("authToken", authToken)
       useRefreshUserData()
       console.info("Token renewed")
     }
@@ -102,6 +100,6 @@ export const useRenewToken = async body => {
 
 export const handleDisconnect = navigate => {
   clearTimeout(tokenTimeout)
-  localStorage.removeItem("jwt")
+  localStorage.removeItem("authToken")
   return navigate("/login")
 }

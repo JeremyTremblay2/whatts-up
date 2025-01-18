@@ -5,7 +5,6 @@ import { Link, useNavigate } from "react-router-dom"
 import { Container, FormHelperText, TextField } from "@mui/material"
 import LoadingButton from "@mui/lab/LoadingButton"
 import "./index.css"
-import { UserContext, useRefreshUserData } from "../UserContext/index.jsx"
 import { enqueueSnackbar } from "notistack"
 
 const Login = ({ isRegister = false }) => {
@@ -23,8 +22,6 @@ const Login = ({ isRegister = false }) => {
     text: false,
   })
 
-  const userContext = useContext(UserContext)
-
   const { isAuthenticated, isAuthenticating, setIsAuthenticating } = useAuthenticate(
     user,
     isRegister
@@ -32,7 +29,6 @@ const Login = ({ isRegister = false }) => {
   useEffect(() => {
     if (isAuthenticated) {
       navigate("/")
-      userContext.setRefreshUser(true)
       if (isRegister) {
         enqueueSnackbar("Your account has been successfully created", { variant: "success" })
       }

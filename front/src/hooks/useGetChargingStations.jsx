@@ -10,9 +10,17 @@ const useGetChargingStations = ({ rowsPerPage = 10, page = 1 }) => {
 
   useEffect(() => {
     async function getData() {
+      const authToken = localStorage.getItem("authToken")
       // API call
       const result = await fetch(
-        `${API_BASE_URL}${API_GET_CHARGING_STATIONS}?size=${rowsPerPage}&page=${page}`
+        `${API_BASE_URL}${API_GET_CHARGING_STATIONS}?size=${rowsPerPage}&page=${page}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Basic ${authToken}`,
+          },
+        }
       )
 
       if (!result.ok) {

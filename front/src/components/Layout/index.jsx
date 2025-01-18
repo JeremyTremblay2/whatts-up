@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { Link, Outlet, useNavigate } from "react-router-dom"
 import Menu from "@mui/material/Menu"
 import { AppBar, Toolbar, Button, Container, Typography, MenuItem, IconButton } from "@mui/material"
@@ -7,25 +7,18 @@ import AccountCircle from "@mui/icons-material/AccountCircle"
 import InputBase from "@mui/material/InputBase"
 import SearchIcon from "@mui/icons-material/Search"
 import { handleDisconnect } from "../../hooks/useAuthenticate"
-import { UserContext, useUserInfo } from "../UserContext"
 import { useIsLoading } from "../LoadingContext/index"
 import ScrollTop from "./ScrollTop"
 import LinearProgress from "@mui/material/LinearProgress"
 
 const Layout = () => {
-  const userInfo = useUserInfo()
   const [anchorEl, setAnchorEl] = useState(null)
 
   const navigate = useNavigate()
 
-  const userContext = useContext(UserContext)
   const { isLoading } = useIsLoading()
-
-  useEffect(() => {
-    if (userInfo === null) {
-      userContext.setRefreshUser(true)
-    }
-  }, [userInfo])
+  
+  const authToken = localStorage.getItem("authToken")
 
   const handleMenu = event => {
     setAnchorEl(event.currentTarget)
@@ -39,14 +32,13 @@ const Layout = () => {
   const handleClickDisconnect = () => {
     setAnchorEl(null)
     handleDisconnect(navigate)
-    userContext.setRefreshUser(true)
   }
 
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
       <Box>
         <AppBar position="static" id="top-anchor">
-          <Toolbar sx={{ display: "grid", gridTemplateColumns: "1fr 2fr 1fr" }}>
+          <Toolbar sx={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
             <Typography variant="h6" component="div">
               <Link
                 to="/"
@@ -55,7 +47,7 @@ const Layout = () => {
                 Whatts Up
               </Link>
             </Typography>
-            {userInfo ? (
+            {authToken ? (
               <>
                 <div style={{ justifySelf: "end" }}>
                   <IconButton
@@ -90,7 +82,6 @@ const Layout = () => {
               </>
             ) : (
               <>
-                <div />
                 <Button
                   sx={{ justifySelf: "end" }}
                   color="inherit"

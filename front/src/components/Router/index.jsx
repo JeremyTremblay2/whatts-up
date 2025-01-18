@@ -6,7 +6,6 @@ import NotificationsProvider from "../Notifications/index.jsx"
 import Home from "../Home/index.jsx"
 import Login from "../Login/index.jsx"
 import PrivateRoute from "./PrivateRoute.jsx"
-import { UserContextProvider } from "../UserContext"
 import { LoadingContextProvider } from "../LoadingContext/index"
 
 const router = createBrowserRouter([
@@ -53,9 +52,7 @@ export default function Router() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <NotificationsProvider prefersDarkMode={prefersDarkMode} />
-      <UserContextProvider>
-        <RouterProvider router={router} />
-      </UserContextProvider>
+      <RouterProvider router={router} />
     </ThemeProvider>
   )
 }
