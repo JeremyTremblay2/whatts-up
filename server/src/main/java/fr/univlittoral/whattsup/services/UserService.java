@@ -11,7 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -20,10 +23,13 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public UserDTO addUser(UserBO userBO) {
         UserEntity user = new UserEntity();
         user.setUsername(userBO.getUsername());
-        user.setPassword(userBO.getPassword());
+        user.setPassword(passwordEncoder.encode(userBO.getPassword()));
         return UserMapper.toDTO(UserMapper.toBO(userRepository.save(user)));
     }
 
@@ -32,14 +38,14 @@ public class UserService {
     }
 
     public UserDTO updateUser(Integer id, UserBO userBO) {
-        UserEntity user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        UserEntity user = userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
         user.setUsername(userBO.getUsername());
-        user.setPassword(userBO.getPassword());
+        user.setPassword(passwordEncoder.encode(userBO.getPassword()));
         return UserMapper.toDTO(UserMapper.toBO(userRepository.save(user)));
     }
 
     public UserDTO getUserById(Integer id) {
-        return UserMapper.toDTO(UserMapper.toBO(userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"))));
+        return UserMapper.toDTO(UserMapper.toBO(userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"))));
     }
 
     public Page<UserProtos.UserProto> getUsers(Pageable pageable) {
