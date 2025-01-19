@@ -31,9 +31,14 @@
     </properties>
     <dependencies>
         <dependency>
+            <groupId>com.hubspot.jackson</groupId>
+            <artifactId>jackson-datatype-protobuf</artifactId>
+            <version>0.9.10-jackson2.9-proto3</version>
+        </dependency>
+        <dependency>
             <groupId>com.google.protobuf</groupId>
             <artifactId>protobuf-java</artifactId>
-            <version>4.28.2</version>
+            <version>3.23.0</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -97,20 +102,19 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>3.3.0</version>
+                <groupId>com.github.os72</groupId>
+                <artifactId>protoc-jar-maven-plugin</artifactId>
+                <version>3.11.4</version>
                 <executions>
                     <execution>
-                        <id>test</id>
                         <phase>generate-sources</phase>
                         <goals>
-                            <goal>add-source</goal>
+                            <goal>run</goal>
                         </goals>
                         <configuration>
-                            <sources>
-                                <source>${project.basedir}/target/generated-sources</source>
-                            </sources>
+                            <optimizeCodegen>false</optimizeCodegen>
+                            <protocVersion>3.23.0</protocVersion>
+                            <includeStdTypes>true</includeStdTypes>
                         </configuration>
                     </execution>
                 </executions>

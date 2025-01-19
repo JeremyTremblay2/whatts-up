@@ -1,10 +1,21 @@
 package fr.univlittoral.whattsup.mappers;
 
+import com.google.protobuf.BoolValue;
+import com.google.protobuf.DoubleValue;
+import com.google.protobuf.Int32Value;
+import com.google.protobuf.StringValue;
+import fr.univlittoral.protobuf.*;
 import fr.univlittoral.whattsup.model.bo.*;
 import fr.univlittoral.whattsup.model.dto.*;
 import fr.univlittoral.whattsup.model.entities.postgres.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class ChargingStationMapper {
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public static ChargingStationBO dtoToBo(ChargingStationDTO dto) {
         if (dto == null) return null;
@@ -254,6 +265,218 @@ public class ChargingStationMapper {
         entity.setPostalCode(bo.getLocationInfo().getPostalCode());
         entity.setCity(bo.getLocationInfo().getCity());
         return entity;
+    }
+
+
+    public static ChargingStationProto boToProto(ChargingStationBO bo) {
+        if (bo == null) return null;
+
+        return ChargingStationProto.newBuilder()
+                .setId(bo.getId())
+                .setName(wrap(bo.getName()))
+                .setBrandName(wrap(bo.getBrandName()))
+                .setAddress(wrap(bo.getAddress()))
+                .setCoordinates(wrap(bo.getCoordinates()))
+                .setOperatorName(wrap(bo.getOperatorName()))
+                .setManagerName(wrap(bo.getManagerName()))
+                .setStationDetails(boToProto(bo.getStationDetails()))
+                .setChargingPoint(boToProto(bo.getChargingPoint()))
+                .setTwoWheelerStation(wrap(bo.getTwoWheelerStation()))
+                .setCommissioningDate(wrap(bo.getCommissioningDate(), dateFormatter))
+                .setAccessibility(wrap(bo.getAccessibility()))
+                .setObservations(wrap(bo.getObservations()))
+                .setLastUpdate(wrap(bo.getLastUpdate(), dateFormatter))
+                .setLocationInfo(boToProto(bo.getLocationInfo()))
+                .build();
+    }
+
+    public static StationDetailsProto boToProto(StationDetailsBO bo) {
+        if (bo == null) return null;
+        return StationDetailsProto.newBuilder()
+                .setItinerantStationId(wrap(bo.getItinerantStationId()))
+                .setLocalStationId(wrap(bo.getLocalStationId()))
+                .setImplantation(wrap(bo.getImplantation()))
+                .setNumberOfChargingPoints(wrap(bo.getNumberOfChargingPoints()))
+                .setReservationRequired(wrap(bo.getReservationRequired()))
+                .setAccessConditions(wrap(bo.getAccessConditions()))
+                .setOperatingHours(wrap(bo.getOperatingHours()))
+                .setDeliveryPointNumber(wrap(bo.getDeliveryPointNumber()))
+                .setTemplateRestrictions(wrap(bo.getTemplateRestrictions()))
+                .build();
+    }
+
+    public static PaymentOptionsProto boToProto(PaymentOptionsBO bo) {
+        if (bo == null) return null;
+        return PaymentOptionsProto.newBuilder()
+                .setPayPerUse(wrap(bo.getPayPerUse()))
+                .setCreditCardPayment(wrap(bo.getCreditCardPayment()))
+                .setOtherPaymentMethods(wrap(bo.getOtherPaymentMethods()))
+                .build();
+    }
+
+    public static LocationInfoProto boToProto(LocationInfoBO bo) {
+        if (bo == null) return null;
+        return LocationInfoProto.newBuilder()
+                .setLongitude(wrap(bo.getLongitude()))
+                .setLatitude(wrap(bo.getLatitude()))
+                .setPostalCode(wrap(bo.getPostalCode()))
+                .setCity(wrap(bo.getCity()))
+                .build();
+    }
+
+    public static ChargingPointProto boToProto(ChargingPointBO bo) {
+        if (bo == null) return null;
+        return ChargingPointProto.newBuilder()
+                .setItinerantId(wrap(bo.getItinerantId()))
+                .setLocalId(wrap(bo.getLocalId()))
+                .setNominalPower(wrap(bo.getNominalPower()))
+                .setConnectorTypes(boToProto(bo.getConnectorTypes()))
+                .setIsFree(wrap(bo.getIsFree()))
+                .setPaymentOptions(boToProto(bo.getPaymentOptions()))
+                .setPricing(wrap(bo.getPricing()))
+                .build();
+    }
+
+    public static ChargingConnectorTypesProto boToProto(ChargingConnectorTypesBO bo) {
+        if (bo == null) return null;
+        return ChargingConnectorTypesProto.newBuilder()
+                .setTypeEF(wrap(bo.getTypeEF()))
+                .setType2(wrap(bo.getType2()))
+                .setComboCCS(wrap(bo.getComboCCS()))
+                .setChademo(wrap(bo.getChademo()))
+                .setOther(wrap(bo.getOther()))
+                .setAttachedCableT2(wrap(bo.getAttachedCableT2()))
+                .setConnectionType(wrap(bo.getConnectionType()))
+                .build();
+    }
+
+    public static ChargingStationBO protoToBo(ChargingStationProto proto) {
+        if (proto == null) return null;
+        return new ChargingStationBO(
+                proto.getId(),
+                unwrap(proto.getName()),
+                unwrap(proto.getBrandName()),
+                unwrap(proto.getAddress()),
+                unwrap(proto.getCoordinates()),
+                unwrap(proto.getOperatorName()),
+                unwrap(proto.getManagerName()),
+                protoToBo(proto.getStationDetails()),
+                protoToBo(proto.getChargingPoint()),
+                unwrap(proto.getTwoWheelerStation()),
+                parseLocalDateTime(unwrap(proto.getCommissioningDate()), dateTimeFormatter),
+                unwrap(proto.getAccessibility()),
+                unwrap(proto.getObservations()),
+                parseLocalDate(unwrap(proto.getLastUpdate()), dateFormatter),
+                protoToBo(proto.getLocationInfo())
+        );
+    }
+
+    public static StationDetailsBO protoToBo(StationDetailsProto proto) {
+        if (proto == null) return null;
+        return new StationDetailsBO(
+                unwrap(proto.getItinerantStationId()),
+                unwrap(proto.getLocalStationId()),
+                unwrap(proto.getImplantation()),
+                unwrap(proto.getNumberOfChargingPoints()),
+                unwrap(proto.getReservationRequired()),
+                unwrap(proto.getAccessConditions()),
+                unwrap(proto.getOperatingHours()),
+                unwrap(proto.getDeliveryPointNumber()),
+                unwrap(proto.getTemplateRestrictions())
+        );
+    }
+
+    public static PaymentOptionsBO protoToBo(PaymentOptionsProto proto) {
+        if (proto == null) return null;
+        return new PaymentOptionsBO(
+                unwrap(proto.getPayPerUse()),
+                unwrap(proto.getCreditCardPayment()),
+                unwrap(proto.getOtherPaymentMethods())
+        );
+    }
+
+    public static LocationInfoBO protoToBo(LocationInfoProto proto) {
+        if (proto == null) return null;
+        return new LocationInfoBO(
+                unwrap(proto.getLongitude()),
+                unwrap(proto.getLatitude()),
+                unwrap(proto.getPostalCode()),
+                unwrap(proto.getCity())
+        );
+    }
+
+    public static ChargingPointBO protoToBo(ChargingPointProto proto) {
+        if (proto == null) return null;
+        return new ChargingPointBO(
+                unwrap(proto.getItinerantId()),
+                unwrap(proto.getLocalId()),
+                unwrap(proto.getNominalPower()),
+                protoToBo(proto.getConnectorTypes()),
+                unwrap(proto.getIsFree()),
+                protoToBo(proto.getPaymentOptions()),
+                unwrap(proto.getPricing())
+        );
+    }
+
+    public static ChargingConnectorTypesBO protoToBo(ChargingConnectorTypesProto proto) {
+        if (proto == null) return null;
+        return new ChargingConnectorTypesBO(
+                unwrap(proto.getTypeEF()),
+                unwrap(proto.getType2()),
+                unwrap(proto.getComboCCS()),
+                unwrap(proto.getChademo()),
+                unwrap(proto.getOther()),
+                unwrap(proto.getAttachedCableT2()),
+                unwrap(proto.getConnectionType())
+        );
+    }
+
+    private static LocalDateTime parseLocalDateTime(String dateStr, DateTimeFormatter formatter) {
+        return (dateStr == null || dateStr.isEmpty()) ? null : LocalDateTime.parse(dateStr, formatter);
+    }
+
+    private static LocalDate parseLocalDate(String dateStr, DateTimeFormatter formatter) {
+        return (dateStr == null || dateStr.isEmpty()) ? null : LocalDate.parse(dateStr, formatter);
+    }
+
+    private static StringValue wrap(String value) {
+        return value == null ? StringValue.getDefaultInstance() : StringValue.of(value);
+    }
+
+    private static BoolValue wrap(Boolean value) {
+        return value == null ? BoolValue.getDefaultInstance() : BoolValue.of(value);
+    }
+
+    private static Int32Value wrap(Integer value) {
+        return value == null ? Int32Value.getDefaultInstance() : Int32Value.of(value);
+    }
+
+    private static DoubleValue wrap(Double value) {
+        return value == null ? DoubleValue.getDefaultInstance() : DoubleValue.of(value);
+    }
+
+    private static StringValue wrap(LocalDate value, DateTimeFormatter formatter) {
+        return value == null ? StringValue.getDefaultInstance() : StringValue.of(value.format(formatter));
+    }
+
+    private static StringValue wrap(LocalDateTime value, DateTimeFormatter formatter) {
+        return value == null ? StringValue.getDefaultInstance() : StringValue.of(value.format(formatter));
+    }
+
+    private static String unwrap(StringValue value) {
+        return value == null || value.getValue().isEmpty() ? null : value.getValue();
+    }
+
+    private static Boolean unwrap(BoolValue value) {
+        return value == null ? null : value.getValue();
+    }
+
+    private static Integer unwrap(Int32Value value) {
+        return value == null ? null : value.getValue();
+    }
+
+    private static Double unwrap(DoubleValue value) {
+        return value == null ? null : value.getValue();
     }
 
     /*public static StationDetailsBO entityToBo(StationDetailsEntity entity) {

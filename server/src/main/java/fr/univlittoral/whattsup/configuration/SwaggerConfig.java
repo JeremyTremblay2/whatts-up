@@ -1,5 +1,8 @@
 package fr.univlittoral.whattsup.configuration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hubspot.jackson.datatype.protobuf.ProtobufModule;
+import io.swagger.v3.core.jackson.ModelResolver;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
@@ -22,5 +25,11 @@ public class SwaggerConfig {
                         .addSecuritySchemes("basicAuth", new SecurityScheme()
                                 .type(SecurityScheme.Type.HTTP)
                                 .scheme("basic")));
+    }
+
+    @Bean
+    public ModelResolver modelResolver(final ObjectMapper objectMapper) {
+        objectMapper.registerModule(new ProtobufModule());
+        return new ModelResolver(objectMapper);
     }
 }

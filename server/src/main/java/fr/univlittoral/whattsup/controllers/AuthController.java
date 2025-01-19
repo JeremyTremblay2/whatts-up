@@ -1,6 +1,6 @@
 package fr.univlittoral.whattsup.controllers;
 
-import fr.univlittoral.whattsup.model.dto.AuthDTO;
+import fr.univlittoral.whattsup.model.dto.LoginRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,7 +19,7 @@ public class AuthController {
     private AuthenticationManager authenticationManager;
 
     @PostMapping("/login")
-    public String login(@RequestBody AuthDTO loginRequest) {
+    public String login(@RequestBody LoginRequestDTO loginRequest) {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
