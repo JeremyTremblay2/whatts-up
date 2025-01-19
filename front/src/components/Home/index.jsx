@@ -1,7 +1,5 @@
 import "./index.css"
 
-import "./index.css"
-
 import { useEffect, useState } from "react"
 import TablePagination from "@mui/material/TablePagination"
 import useGetChargingStations from "../../hooks/useGetChargingStations"

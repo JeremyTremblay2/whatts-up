@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import PropTypes from "prop-types"
 import { Link, Outlet, useNavigate } from "react-router-dom"
 import Menu from "@mui/material/Menu"
 import { AppBar, Toolbar, Button, Container, Typography, MenuItem, IconButton } from "@mui/material"
@@ -11,14 +12,14 @@ import { useIsLoading } from "../LoadingContext/index"
 import ScrollTop from "./ScrollTop"
 import LinearProgress from "@mui/material/LinearProgress"
 
-const Layout = () => {
+const Layout = ({ prefersDarkMode }) => {
   const [anchorEl, setAnchorEl] = useState(null)
 
   const navigate = useNavigate()
 
   const { isLoading } = useIsLoading()
-  
-  const authToken = localStorage.getItem("authToken")
+
+  const authToken = sessionStorage.getItem("authToken")
 
   const handleMenu = event => {
     setAnchorEl(event.currentTarget)
@@ -38,15 +39,17 @@ const Layout = () => {
     <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
       <Box>
         <AppBar position="static" id="top-anchor">
-          <Toolbar sx={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
+          <Toolbar sx={{ display: "grid", gridTemplateColumns: "auto 2fr 1fr", gap: "30px" }}>
             <Typography variant="h6" component="div">
-              <Link
-                to="/"
-                style={{ textDecoration: "none", color: "unset" }}
-              >
+              <Link to="/" style={{ textDecoration: "none", color: "unset" }}>
                 Whatts Up
               </Link>
             </Typography>
+            <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+              <Link to="/charts" style={{ textDecoration: "none", color: "unset" }}>
+                <Button sx={{ my: 2, color: "white", display: "block" }}>Charts</Button>
+              </Link>
+            </Box>
             {authToken ? (
               <>
                 <div style={{ justifySelf: "end" }}>
@@ -75,7 +78,6 @@ const Layout = () => {
                     open={Boolean(anchorEl)}
                     onClose={() => setAnchorEl(null)}
                   >
-                    <MenuItem onClick={handleClickProfile}>Profile</MenuItem>
                     <MenuItem onClick={handleClickDisconnect}>Disconnect</MenuItem>
                   </Menu>
                 </div>
@@ -96,7 +98,7 @@ const Layout = () => {
       </Box>
       {isLoading && <LinearProgress style={{ width: "100%" }} />}
       <Container maxWidth="xl" sx={{ padding: "20px 0", flexGrow: 1 }}>
-        <Outlet />
+        <Outlet context={{prefersDarkMode}}/>
       </Container>
       <AppBar position="static">
         <Toolbar>
@@ -106,6 +108,10 @@ const Layout = () => {
       <ScrollTop />
     </div>
   )
+}
+
+Layout.propTypes = {
+  prefersDarkMode: PropTypes.bool,
 }
 
 export default Layout

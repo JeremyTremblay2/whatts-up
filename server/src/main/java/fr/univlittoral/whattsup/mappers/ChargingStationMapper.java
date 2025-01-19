@@ -439,8 +439,8 @@ public class ChargingStationMapper {
         return (dateStr == null || dateStr.isEmpty()) ? null : LocalDate.parse(dateStr, formatter);
     }
 
-    private static StringValue wrap(String value) {
-        return value == null ? StringValue.getDefaultInstance() : StringValue.of(value);
+    private static String wrap(String value) {
+        return value == null ? "" : value;
     }
 
     private static BoolValue wrap(Boolean value) {
@@ -455,16 +455,16 @@ public class ChargingStationMapper {
         return value == null ? DoubleValue.getDefaultInstance() : DoubleValue.of(value);
     }
 
-    private static StringValue wrap(LocalDate value, DateTimeFormatter formatter) {
-        return value == null ? StringValue.getDefaultInstance() : StringValue.of(value.format(formatter));
+    private static String wrap(LocalDate value, DateTimeFormatter formatter) {
+        return value == null ? "" : value.format(formatter);
     }
 
-    private static StringValue wrap(LocalDateTime value, DateTimeFormatter formatter) {
-        return value == null ? StringValue.getDefaultInstance() : StringValue.of(value.format(formatter));
+    private static String wrap(LocalDateTime value, DateTimeFormatter formatter) {
+        return value == null ? "" : value.format(formatter);
     }
 
-    private static String unwrap(StringValue value) {
-        return value == null || value.getValue().isEmpty() ? null : value.getValue();
+    private static String unwrap(String value) {
+        return value == null || value.isEmpty() ? null : value;
     }
 
     private static Boolean unwrap(BoolValue value) {

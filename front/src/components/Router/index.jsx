@@ -7,33 +7,42 @@ import Home from "../Home/index.jsx"
 import Login from "../Login/index.jsx"
 import PrivateRoute from "./PrivateRoute.jsx"
 import { LoadingContextProvider } from "../LoadingContext/index"
-
-const router = createBrowserRouter([
-  {
-    element: (
-      <LoadingContextProvider>
-        <Layout />
-      </LoadingContextProvider>
-    ),
-    children: [
-      {
-        path: "/",
-        element: <Home />,
-      },
-      {
-        path: "/login",
-        element: <Login />,
-      },
-      {
-        path: "/register",
-        element: <Login isRegister />,
-      },
-    ],
-  },
-])
+import ChargingStationsChart from "../ChargingStationsChart/index.jsx"
 
 export default function Router() {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)")
+
+  const router = createBrowserRouter([
+    {
+      element: (
+        <LoadingContextProvider>
+          <Layout prefersDarkMode={prefersDarkMode} />
+        </LoadingContextProvider>
+      ),
+      children: [
+        {
+          path: "/",
+          element: (
+            <PrivateRoute>
+              <Home />
+            </PrivateRoute>
+          ),
+        },
+        {
+          path: "/login",
+          element: <Login />,
+        },
+        {
+          path: "/charts",
+          element: (
+            <PrivateRoute>
+              <ChargingStationsChart />
+            </PrivateRoute>
+          ),
+        },
+      ],
+    },
+  ])
 
   const theme = useMemo(
     () =>

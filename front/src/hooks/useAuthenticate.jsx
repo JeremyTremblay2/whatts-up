@@ -44,7 +44,7 @@ export const useAuthenticate = (body) => {
       }
     } else {
       const credentials = btoa(`${body.username}:${body.password}`)
-      localStorage.setItem("authToken", credentials)
+      sessionStorage.setItem("authToken", credentials)
       setIsAuthenticated(true)
       setIsAuthenticating(false)
       return true
@@ -64,7 +64,7 @@ export const useRenewToken = async body => {
     clearTimeout(tokenTimeout)
 
     tokenTimeout = setTimeout(() => {
-      if (localStorage.getItem("authToken")) {
+      if (sessionStorage.getItem("authToken")) {
         renewToken()
       }
       renewTokenHandler()
@@ -76,7 +76,7 @@ export const useRenewToken = async body => {
   const renewToken = async () => {
     const response = await fetch(`${API_BASE_URL}${API_USER_RENEW_TOKEN}`, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
       },
       body: JSON.stringify(body),
     })
@@ -91,7 +91,7 @@ export const useRenewToken = async body => {
       }
     } else {
       const authToken = await response.text()
-      localStorage.setItem("authToken", authToken)
+      sessionStorage.setItem("authToken", authToken)
       useRefreshUserData()
       console.info("Token renewed")
     }
@@ -100,6 +100,6 @@ export const useRenewToken = async body => {
 
 export const handleDisconnect = navigate => {
   clearTimeout(tokenTimeout)
-  localStorage.removeItem("authToken")
+  sessionStorage.removeItem("authToken")
   return navigate("/login")
 }

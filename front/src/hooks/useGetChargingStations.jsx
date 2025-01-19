@@ -1,23 +1,23 @@
 import { useEffect, useState } from "react"
 import PropTypes from "prop-types"
 import { API_GET_CHARGING_STATIONS, API_BASE_URL } from "../utils/constants"
+import { protobuf } from "../proto/charging_stations"
 
 const useGetChargingStations = ({ rowsPerPage = 10, page = 1 }) => {
   const [chargingStations, setChargingStations] = useState([])
   const [totalElements, setTotalElements] = useState(0)
-  const [totalPages, setTotalPages] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     async function getData() {
-      const authToken = localStorage.getItem("authToken")
+      const authToken = sessionStorage.getItem("authToken")
       // API call
       const result = await fetch(
         `${API_BASE_URL}${API_GET_CHARGING_STATIONS}?size=${rowsPerPage}&page=${page}`,
         {
           method: "GET",
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/x-protobuf",
             Authorization: `Basic ${authToken}`,
           },
         }
@@ -27,11 +27,22 @@ const useGetChargingStations = ({ rowsPerPage = 10, page = 1 }) => {
         throw "There was a problem while collecting data, please retry."
       }
 
-      const data = await result.json()
+      const arrayBuffer = await result.arrayBuffer()
+      try {
+        const ChargingStationPageProto = protobuf.ChargingStationPageProto
+        const message = ChargingStationPageProto.decode(new Uint8Array(arrayBuffer))
+        const data = ChargingStationPageProto.toObject(message, {
+          longs: String,
+          enums: String,
+          bytes: String,
+        })
+        console.log("Data:", data) // Debug: Log the data
 
-      setChargingStations(data?.content)
-      setTotalElements(data?.totalElements)
-      setTotalPages(data?.totalPages)
+        setChargingStations(data.chargingStations)
+        setTotalElements(data.totalElements)
+      } catch (error) {
+        console.error("Decoding Error:", error) // Debug: Log the decoding error
+      }
     }
 
     setIsLoading(true)
@@ -39,12 +50,12 @@ const useGetChargingStations = ({ rowsPerPage = 10, page = 1 }) => {
     getData().then(() => setIsLoading(false))
   }, [rowsPerPage, page])
 
-  return { chargingStations, isLoading, totalElements, totalPages }
+  return { chargingStations, isLoading, totalElements }
 }
 
 export default useGetChargingStations
 
 useGetChargingStations.propTypes = {
-  rowsPerPage: PropTypes.number,
-  page: PropTypes.number,
+  department: PropTypes.string,
+  hasMonth: PropTypes.bool,
 }

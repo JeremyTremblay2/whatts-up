@@ -5,7 +5,7 @@ import { useIsLoading } from "../LoadingContext/index.jsx"
 import { useEffect } from "react"
 
 const PrivateRoute = ({ children = null }) => {
-  const authToken = localStorage.getItem("authToken")
+  const authToken = sessionStorage.getItem("authToken")
 
   if (!authToken) {
     return <Navigate to="/login" replace />

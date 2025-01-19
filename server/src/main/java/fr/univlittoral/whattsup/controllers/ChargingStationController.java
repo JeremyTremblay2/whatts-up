@@ -71,7 +71,7 @@ public class ChargingStationController {
         return ResponseEntity.ok(ChargingStationPageProto.newBuilder()
                 .addAllChargingStations(protos.getContent())
                 .setTotalPages(protos.getTotalPages())
-                .setTotalElements(protos.getTotalElements())
+                .setTotalElements((int) protos.getTotalElements())
                 .setPageSize(protos.getSize())
                 .setPageNumber(protos.getNumber())
                 .build());
