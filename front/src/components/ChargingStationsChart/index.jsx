@@ -25,9 +25,7 @@ import "./index.css"
 const ChargingStationsChart = () => {
   const { prefersDarkMode } = useOutletContext()
   const [department, setDepartment] = useState(null)
-  console.log("department", department)
   const [hasMonth, setHasMonth] = useState(false)
-  console.log("hasMonth", hasMonth)
   const { chargingStations } = useGetChargingStationsQuantities({ department, hasMonth })
 
   if (prefersDarkMode) {

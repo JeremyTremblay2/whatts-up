@@ -11,6 +11,9 @@ POSTGRES_DATABASE_NAME="default"
 
 export PGPASSWORD="$POSTGRES_PASSWORD"
 
+echo "Waiting for Postgres to start..."
+sleep 10
+
 # Vérification de l'existence du fichier CSV
 if [[ ! -f "$CSV_FILE" ]]; then
     echo "Erreur : Le fichier CSV $CSV_FILE est introuvable."

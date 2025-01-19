@@ -36,7 +36,6 @@ const useGetChargingStations = ({ rowsPerPage = 10, page = 1 }) => {
           enums: String,
           bytes: String,
         })
-        console.log("Data:", data) // Debug: Log the data
 
         setChargingStations(data.chargingStations)
         setTotalElements(data.totalElements)

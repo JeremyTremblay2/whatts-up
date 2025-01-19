@@ -65,7 +65,7 @@ Il faut tout d'abord démarrer Docker.
 Il va créer la base de données clickhouse et la peupler, la base de données postgres, son schéma et ses données, ainsi que l'API qu'il va lancer et le _front_ qu'il va également démarrer. Attendez quelque secondes que tout démarre correctement.
 
 ```bash
-docker-compose build .
+docker compose up
 ```
 
 ### 4. Testez !

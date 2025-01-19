@@ -1,20 +1,29 @@
-# Start from the official Go image
-FROM golang:latest
+# Utiliser une image de base Maven pour construire l'application
+FROM maven:3.8.4-openjdk-17 AS build
 
-# Set the Current Working Directory inside the container
+# Définir le répertoire de travail dans le conteneur
 WORKDIR /app
 
-# Copy go.mod file
-# COPY go.mod go.sum ./
-
-# Copy the source from the current directory to the Working Directory inside the container
+# Copier les fichiers de l'application dans le conteneur
 COPY . .
 
-# Build the Go app
-RUN go build -o server launcher/main.go
+# Construire l'application
+RUN mvn clean package -DskipTests
 
-# Expose port 8080 to the outside world
+# Ajouter une étape de débogage pour lister les fichiers dans le répertoire target
+RUN ls -l /app/target
+
+# Utiliser une image de base Java pour exécuter l'application
+FROM openjdk:17-jdk-slim
+
+# Définir le répertoire de travail dans le conteneur
+WORKDIR /app
+
+# Copier le fichier JAR généré depuis l'étape de build
+COPY --from=build /app/target/*.jar app.jar
+
+# Exposer le port sur lequel l'application s'exécute
 EXPOSE 8080
 
-# Run the executable
-CMD ["/app/server"]
+# Définir la commande pour exécuter l'application
+ENTRYPOINT ["java", "-jar", "app.jar"]
