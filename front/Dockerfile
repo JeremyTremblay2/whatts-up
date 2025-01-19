@@ -1,32 +1,40 @@
-# Utiliser une image de base officielle de Node.js
-FROM node:18-alpine AS build
+################################
+## BUILD ENVIRONMENT ###########
+################################
 
-# Définir le répertoire de travail dans le conteneur
-WORKDIR /app
+# Use the official Node.js Alpine image (adjust based on your project's requirements)
+FROM node:20-alpine3.20 As build
 
-# Copier les fichiers package.json et package-lock.json
-COPY package*.json ./
+# Set the working directory inside the container
+WORKDIR /usr/src/app
 
-# Installer les dépendances
-RUN npm install
+# Copy package.json and package-lock.json into the container
+COPY package*.json package-lock.json ./
 
-# Copier le reste des fichiers de l'application
-COPY . .
+# Install dependencies using npm
+RUN npm ci
 
-# Construire l'application
+# Copy the project files into the working directory
+COPY ./ ./
+
+# Build the React app for production
 RUN npm run build
 
-# Utiliser une image de base officielle de Nginx pour servir l'application
-FROM nginx:alpine
+################################
+#### PRODUCTION ENVIRONMENT ####
+################################
 
-# Copier les fichiers construits depuis l'étape de build
-COPY --from=build /app/dist /usr/share/nginx/html
+# Use the official NGINX image for production
+FROM nginx:stable-alpine as production
 
-# Copier le fichier de configuration Nginx personnalisé
-COPY nginx.conf /etc/nginx/nginx.conf
+# copy nginx configuration in side conf.d folder
+COPY --from=build /usr/src/app/nginx.conf /etc/nginx/conf.d/default.conf
 
-# Exposer le port sur lequel Nginx va écouter
+# Copy the build output from the dist folder into the Nginx html directory
+COPY --from=build /usr/src/app/dist /usr/share/nginx/html
+
+# Expose port 80 to allow access to the app
 EXPOSE 80
 
-# Démarrer Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Run Nginx in the foreground
+ENTRYPOINT ["nginx", "-g", "daemon off;"] 

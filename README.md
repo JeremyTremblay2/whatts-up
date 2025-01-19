@@ -65,8 +65,10 @@ Il faut tout d'abord démarrer Docker.
 Il va créer la base de données clickhouse et la peupler, la base de données postgres, son schéma et ses données, ainsi que l'API qu'il va lancer et le _front_ qu'il va également démarrer. Attendez quelque secondes que tout démarre correctement.
 
 ```bash
-docker compose up
+docker compose up --build
 ```
+
+> Il est possible qu'un problème survienne lors de l'exécution des scripts d'initialisation. En cas de problème, vérifiez que les sauts de ligne dans les fichiers `init.sh` de [Postgres](./server/fs/volumes/postgres/docker-entrypoint-initdb.d/init.sh) et [ClickHouse](./server/fs/volumes/clickhouse/docker-entrypoint-initdb.d/init.sh) sont bien au format LF, puis réexécutez la commande `docker compose up --build`.
 
 ### 4. Testez !
 
