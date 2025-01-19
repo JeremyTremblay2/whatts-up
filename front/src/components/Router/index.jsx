@@ -33,6 +33,10 @@ export default function Router() {
           element: <Login />,
         },
         {
+          path: "/register",
+          element: <Login isRegister />,
+        },
+        {
           path: "/charts",
           element: (
             <PrivateRoute>

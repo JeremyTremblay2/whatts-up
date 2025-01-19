@@ -23,7 +23,10 @@ const Login = ({ isRegister = false }) => {
   })
 
   const { isAuthenticated, isAuthenticating, setIsAuthenticating } = useAuthenticate(
-    user,
+    {
+      username: user?.username,
+      password: user?.password,
+    },
     isRegister
   )
   useEffect(() => {

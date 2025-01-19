@@ -23,6 +23,19 @@ if ! psql -U "$POSTGRES_USER" -lqt | cut -d \| -f 1 | grep -qw "$POSTGRES_DATABA
     createdb -U "$POSTGRES_USER" "$POSTGRES_DATABASE_NAME"
 fi
 
+echo "Création de la table users dans Postgres..."
+psql -U "$POSTGRES_USER" -d "$POSTGRES_DATABASE_NAME" -c "DROP TABLE IF EXISTS users;"
+
+psql -U "$POSTGRES_USER" -d "$POSTGRES_DATABASE_NAME" <<EOSQL
+CREATE TABLE users
+(
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL,
+    enabled BOOLEAN NOT NULL
+);
+EOSQL
+
 echo "Création de la table $TABLE_NAME dans Postgres..."
 psql -U "$POSTGRES_USER" -d "$POSTGRES_DATABASE_NAME" -c "DROP TABLE IF EXISTS $TABLE_NAME;"
 

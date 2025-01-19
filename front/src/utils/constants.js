@@ -4,5 +4,5 @@ export const API_GET_CHARGING_STATIONS_QUANTITIES = "/api/charging-stations/quan
 
 export const API_USER_INFO = "/api/Users"
 export const API_USER_LOGIN = "/api/auth/login"
-export const API_USER_RENEW_TOKEN = "/api/Users/renewToken"
+export const API_USER_REGISTER = "/api/users"
 export const API_GET_USERS = "/api/users"

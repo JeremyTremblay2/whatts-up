@@ -27,7 +27,9 @@ const Home = () => {
       <h1>Charging Stations</h1>
       <div className="cards-list">
         {isLoading ? (
-          <p>Loading...</p>
+          Array.from({ length: rowsPerPage }).map((_, index) => (
+            <ChargingStationCard key={index} isLoading={isLoading} />
+          ))
         ) : (
           <>
             {chargingStations.map(station => (

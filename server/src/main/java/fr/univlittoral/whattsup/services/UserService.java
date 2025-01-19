@@ -30,6 +30,7 @@ public class UserService {
         UserEntity user = new UserEntity();
         user.setUsername(userBO.getUsername());
         user.setPassword(passwordEncoder.encode(userBO.getPassword()));
+        user.setEnabled(true);
         return UserMapper.toDTO(UserMapper.toBO(userRepository.save(user)));
     }
 

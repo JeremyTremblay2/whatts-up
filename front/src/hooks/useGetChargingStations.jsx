@@ -13,7 +13,7 @@ const useGetChargingStations = ({ rowsPerPage = 10, page = 1 }) => {
       const authToken = sessionStorage.getItem("authToken")
       // API call
       const result = await fetch(
-        `${API_BASE_URL}${API_GET_CHARGING_STATIONS}?size=${rowsPerPage}&page=${page}`,
+        `${API_BASE_URL}${API_GET_CHARGING_STATIONS}?size=${rowsPerPage}&page=${page}&sortColumn=localId`,
         {
           method: "GET",
           headers: {

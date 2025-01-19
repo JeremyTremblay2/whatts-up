@@ -1,8 +1,8 @@
 import React from "react"
 import PropTypes from "prop-types"
-import { Card, CardContent, Typography } from "@mui/material"
+import { Card, CardContent, Typography, Skeleton } from "@mui/material"
 
-const ChargingStationCard = ({ name, address, operatorName }) => {
+const ChargingStationCard = ({ name, address, operatorName, isLoading }) => {
   return (
     <Card
       sx={{
@@ -18,13 +18,13 @@ const ChargingStationCard = ({ name, address, operatorName }) => {
     >
       <CardContent sx={{ textAlign: "center" }}>
         <Typography variant="h5" component="div">
-          {name}
+          {isLoading || !name ? <Skeleton /> : name}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {address}
+          {isLoading ? <Skeleton /> : address}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {operatorName}
+          {isLoading ? <Skeleton /> : operatorName}
         </Typography>
       </CardContent>
     </Card>
@@ -34,6 +34,7 @@ ChargingStationCard.propTypes = {
   name: PropTypes.string,
   address: PropTypes.string,
   operatorName: PropTypes.string,
+  isLoading: PropTypes.bool,
 }
 
 export default ChargingStationCard

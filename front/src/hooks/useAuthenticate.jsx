@@ -3,10 +3,10 @@ import { enqueueSnackbar } from "notistack"
 import {
   API_BASE_URL,
   API_USER_LOGIN,
-  API_USER_RENEW_TOKEN,
+  API_USER_REGISTER,
 } from "../utils/constants.js"
 
-export const useAuthenticate = (body) => {
+export const useAuthenticate = (body, isRegister) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null)
   const [isAuthenticating, setIsAuthenticating] = useState(false)
   useEffect(() => {
@@ -18,7 +18,7 @@ export const useAuthenticate = (body) => {
   const authentication = async () => {
     setIsAuthenticating(true)
     const response = await fetch(
-      `${API_BASE_URL}${API_USER_LOGIN}`,
+      `${API_BASE_URL}${isRegister ? API_USER_REGISTER : API_USER_LOGIN}`,
       {
         method: "POST",
         headers: {
@@ -57,49 +57,7 @@ export const useAuthenticate = (body) => {
   return { isAuthenticated, isAuthenticating, setIsAuthenticating }
 }
 
-let tokenTimeout = null
-
-export const useRenewToken = async body => {
-  const renewTokenHandler = () => {
-    clearTimeout(tokenTimeout)
-
-    tokenTimeout = setTimeout(() => {
-      if (sessionStorage.getItem("authToken")) {
-        renewToken()
-      }
-      renewTokenHandler()
-    }, 3600000)
-  }
-
-  renewTokenHandler()
-
-  const renewToken = async () => {
-    const response = await fetch(`${API_BASE_URL}${API_USER_RENEW_TOKEN}`, {
-      headers: {
-        Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
-      },
-      body: JSON.stringify(body),
-    })
-    if (!response.ok) {
-      const error = await response.text()
-      switch (response.status) {
-        case 500:
-          enqueueSnackbar("Server error", { variant: "error" })
-          break
-        default:
-          enqueueSnackbar("Unknown error", { variant: "error" })
-      }
-    } else {
-      const authToken = await response.text()
-      sessionStorage.setItem("authToken", authToken)
-      useRefreshUserData()
-      console.info("Token renewed")
-    }
-  }
-}
-
 export const handleDisconnect = navigate => {
-  clearTimeout(tokenTimeout)
   sessionStorage.removeItem("authToken")
   return navigate("/login")
 }
