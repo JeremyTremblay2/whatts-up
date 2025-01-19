@@ -11,7 +11,7 @@ option java_outer_classname = "ChargingStationProtos";
 message ChargingStationPageProto {
   repeated ChargingStationProto chargingStations = 1;
   int32 totalPages = 2;
-  int64 totalElements = 3;
+  int32 totalElements = 3;
   int32 pageSize = 4;
   int32 pageNumber = 5;
 }

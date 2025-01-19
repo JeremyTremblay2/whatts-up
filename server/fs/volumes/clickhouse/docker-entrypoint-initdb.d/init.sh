@@ -10,7 +10,7 @@ CLICKHOUSE_PORT="9000"
 CLICKHOUSE_USER="ec_admin"
 CLICKHOUSE_PASSWORD="jk5Di!58fdG8dsC9"
 
-# sleep for 5 seconds to wait for postgres to start
+echo "Waiting for ClickHouse to start..."
 sleep 5
 
 # Vérification de l'existence du fichier CSV
