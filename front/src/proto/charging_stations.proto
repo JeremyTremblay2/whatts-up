@@ -1,0 +1,86 @@
+syntax = "proto3";
+
+package protobuf;
+
+import "google/protobuf/wrappers.proto";
+
+option java_multiple_files = true;
+option java_package = "fr.univlittoral.protobuf";
+option java_outer_classname = "ChargingStationProtos";
+
+message ChargingStationPageProto {
+  repeated ChargingStationProto chargingStations = 1;
+  int32 totalPages = 2;
+  int32 totalElements = 3;
+  int32 pageSize = 4;
+  int32 pageNumber = 5;
+}
+
+// Message principal pour la station de recharge
+message ChargingStationProto {
+  int32 id = 1;
+  string name = 2;
+  string brandName = 3;
+  string address = 4;
+  string coordinates = 5;
+  string operatorName = 6;
+  string managerName = 7;
+  StationDetailsProto stationDetails = 8;
+  ChargingPointProto chargingPoint = 9;
+  google.protobuf.BoolValue  twoWheelerStation = 10;
+  string commissioningDate = 11;
+  string accessibility = 12;
+  string observations = 13;
+  string lastUpdate = 14;
+  LocationInfoProto locationInfo = 15;
+}
+
+// Message pour les détails de la station
+message StationDetailsProto {
+  string itinerantStationId = 1;
+  string localStationId = 2;
+  string implantation = 3;
+  google.protobuf.Int32Value numberOfChargingPoints = 4;
+  google.protobuf.BoolValue  reservationRequired = 5;
+  string accessConditions = 6;
+  string operatingHours = 7;
+  string deliveryPointNumber = 8;
+  string templateRestrictions = 9;
+}
+
+// Message pour les points de recharge
+message ChargingPointProto {
+  string itinerantId = 1;
+  string localId = 2;
+  google.protobuf.DoubleValue nominalPower = 3;
+  ChargingConnectorTypesProto connectorTypes = 4;
+  google.protobuf.BoolValue  isFree = 5;
+  PaymentOptionsProto paymentOptions = 6;
+  string pricing = 7;
+}
+
+// Message pour les types de connecteurs
+message ChargingConnectorTypesProto {
+  google.protobuf.BoolValue  typeEF = 1;
+  google.protobuf.BoolValue  type2 = 2;
+  google.protobuf.BoolValue  comboCCS = 3;
+  google.protobuf.BoolValue  chademo = 4;
+  google.protobuf.BoolValue  other = 5;
+  google.protobuf.BoolValue  attachedCableT2 = 6;
+  string connectionType = 7;
+}
+
+// Message pour les options de paiement
+message PaymentOptionsProto {
+  google.protobuf.BoolValue  payPerUse = 1;
+  string creditCardPayment = 2;
+  google.protobuf.BoolValue  otherPaymentMethods = 3;
+}
+
+// Message pour les informations de localisation
+message LocationInfoProto {
+  google.protobuf.DoubleValue longitude = 1;
+  google.protobuf.DoubleValue latitude = 2;
+  string postalCode = 3;
+  string city = 4;
+}

@@ -1,0 +1,16 @@
+springdoc:
+  swagger-ui.path: /swagger
+server:
+  error:
+    include-message: always
+
+spring:
+  datasource:
+    postgres:
+      url: jdbc:postgresql://postgres:5432/default
+      username: ec_admin
+      password: jk5Di!58fdG8dsC9
+      driver-class-name: org.postgresql.Driver
+    clickhouse:
+      url: jdbc:clickhouse://clickhouse:8123
+      driver-class-name: com.clickhouse.jdbc.ClickHouseDriver

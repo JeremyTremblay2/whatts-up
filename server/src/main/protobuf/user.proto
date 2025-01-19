@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package protobuf;
+
+option java_package = "fr.univlittoral.protobuf";
+option java_outer_classname = "UserProtos";
+
+message UserProto {
+  int32 id = 1;
+  string username = 2;
+  string password = 3;
+  bool is_enabled = 4;
+}
+
+message UserPageProto {
+  repeated UserProto users = 1;
+  int32 totalPages = 2;
+  int64 totalElements = 3;
+  int32 pageSize = 4;
+  int32 pageNumber = 5;
+}
