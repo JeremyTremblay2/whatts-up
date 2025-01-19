@@ -11,6 +11,7 @@ public class ChargingStationMapper {
         return new ChargingStationBO(
                 dto.getId(),
                 dto.getName(),
+                dto.getBrandName(),
                 dto.getAddress(),
                 dto.getCoordinates(),
                 dto.getOperatorName(),
@@ -35,7 +36,9 @@ public class ChargingStationMapper {
                 dto.getNumberOfChargingPoints(),
                 dto.getReservationRequired(),
                 dto.getAccessConditions(),
-                dto.getOperatingHours()
+                dto.getOperatingHours(),
+                dto.getDeliveryPointNumber(),
+                dto.getTemplateRestrictions()
         );
     }
 
@@ -79,7 +82,8 @@ public class ChargingStationMapper {
                 dto.getComboCCS(),
                 dto.getChademo(),
                 dto.getOther(),
-                dto.getAttachedCableT2()
+                dto.getAttachedCableT2(),
+                dto.getConnectionType()
         );
     }
 
@@ -88,6 +92,7 @@ public class ChargingStationMapper {
         return new ChargingStationDTO(
                 bo.getId(),
                 bo.getName(),
+                bo.getBrandName(),
                 bo.getAddress(),
                 bo.getCoordinates(),
                 bo.getOperatorName(),
@@ -112,7 +117,9 @@ public class ChargingStationMapper {
                 bo.getNumberOfChargingPoints(),
                 bo.getReservationRequired(),
                 bo.getAccessConditions(),
-                bo.getOperatingHours()
+                bo.getOperatingHours(),
+                bo.getDeliveryPointNumber(),
+                bo.getTemplateRestrictions()
         );
     }
 
@@ -156,7 +163,8 @@ public class ChargingStationMapper {
                 bo.getComboCCS(),
                 bo.getChademo(),
                 bo.getOther(),
-                bo.getAttachedCableT2()
+                bo.getAttachedCableT2(),
+                bo.getConnectionType()
         );
     }
 
@@ -164,41 +172,45 @@ public class ChargingStationMapper {
         if (entity == null) return null;
         return new ChargingStationBO(
                 entity.getId(),
-                entity.getNomStation(),
-                entity.getAdresseStation(),
-                entity.getCoordonneesxy(),
-                entity.getNomOperateur(),
-                entity.getNomAmenageur(),
-                new StationDetailsBO(entity.getIdStationItinerance(),
-                        entity.getIdStationLocal(),
-                        entity.getImplantationStation(),
-                        entity.getNbrePdc(),
-                        entity.getReservation(),
-                        entity.getConditionAcces(),
-                        entity.getHoraires()),
-                new ChargingPointBO(entity.getIdPdcItinerance(),
-                        entity.getIdPdcLocal(),
-                        entity.getPuissanceNominale(),
-                        new ChargingConnectorTypesBO(entity.getPriseTypeEf(),
-                                entity.getPriseType2(),
-                                entity.getPriseTypeComboCcs(),
-                                entity.getPriseTypeChademo(),
-                                entity.getPriseTypeAutre(),
-                                entity.getCableT2Attache()),
-                        entity.getGratuit(),
-                        new PaymentOptionsBO(entity.getPaiementActe(),
-                                entity.getPaiementCb(),
-                                entity.getPaiementAutre()),
-                        entity.getTarification()),
-                entity.getStationDeuxRoues(),
-                entity.getDateMiseEnService(),
-                entity.getAccessibilitePmr(),
+                entity.getName(),
+                entity.getBrandName(),
+                entity.getAddress(),
+                entity.getCoordinates(),
+                entity.getOperatorName(),
+                entity.getManagerName(),
+                new StationDetailsBO(entity.getItinerantStationId(),
+                        entity.getLocalStationId(),
+                        entity.getImplantation(),
+                        entity.getNumberOfChargingPoints(),
+                        entity.getReservationRequired(),
+                        entity.getAccessConditions(),
+                        entity.getOperatingHours(),
+                        entity.getDeliveryPointNumber(),
+                        entity.getTemplateRestrictions()),
+                new ChargingPointBO(entity.getItinerantId(),
+                        entity.getLocalId(),
+                        entity.getNominalPower(),
+                        new ChargingConnectorTypesBO(entity.getTypeEF(),
+                                entity.getType2(),
+                                entity.getComboCCS(),
+                                entity.getChademo(),
+                                entity.getOther(),
+                                entity.getAttachedCableT2(),
+                                entity.getConnectionType()),
+                        entity.getIsFree(),
+                        new PaymentOptionsBO(entity.getPayPerUse(),
+                                entity.getCreditCardPayment(),
+                                entity.getOtherPaymentMethods()),
+                        entity.getPricing()),
+                entity.getTwoWheelerStation(),
+                entity.getCommissioningDate(),
+                entity.getAccessibility(),
                 entity.getObservations(),
-                entity.getDateMaj(),
-                new LocationInfoBO(entity.getConsolidatedLongitude(),
-                        entity.getConsolidatedLatitude(),
-                        entity.getConsolidatedCodePostal(),
-                        entity.getConsolidatedCommune())
+                entity.getLastUpdate(),
+                new LocationInfoBO(entity.getLongitude(),
+                        entity.getLatitude(),
+                        entity.getPostalCode(),
+                        entity.getCity())
         );
     }
 
@@ -206,41 +218,41 @@ public class ChargingStationMapper {
         if (bo == null) return null;
         ChargingStationEntity entity = new ChargingStationEntity();
         entity.setId(bo.getId());
-        entity.setNomStation(bo.getName());
-        entity.setAdresseStation(bo.getAddress());
-        entity.setCoordonneesxy(bo.getCoordinates());
-        entity.setNomOperateur(bo.getOperatorName());
-        entity.setNomAmenageur(bo.getManagerName());
-        entity.setIdStationItinerance(bo.getStationDetails().getItinerantStationId());
-        entity.setIdStationLocal(bo.getStationDetails().getLocalStationId());
-        entity.setImplantationStation(bo.getStationDetails().getImplantation());
-        entity.setNbrePdc(bo.getStationDetails().getNumberOfChargingPoints());
-        entity.setReservation(bo.getStationDetails().getReservationRequired());
-        entity.setConditionAcces(bo.getStationDetails().getAccessConditions());
-        entity.setHoraires(bo.getStationDetails().getOperatingHours());
-        entity.setIdPdcItinerance(bo.getChargingPoint().getItinerantId());
-        entity.setIdPdcLocal(bo.getChargingPoint().getLocalId());
-        entity.setPuissanceNominale(bo.getChargingPoint().getNominalPower());
-        entity.setPriseTypeEf(bo.getChargingPoint().getConnectorTypes().getTypeEF());
-        entity.setPriseType2(bo.getChargingPoint().getConnectorTypes().getType2());
-        entity.setPriseTypeComboCcs(bo.getChargingPoint().getConnectorTypes().getComboCCS());
-        entity.setPriseTypeChademo(bo.getChargingPoint().getConnectorTypes().getChademo());
-        entity.setPriseTypeAutre(bo.getChargingPoint().getConnectorTypes().getOther());
-        entity.setCableT2Attache(bo.getChargingPoint().getConnectorTypes().getAttachedCableT2());
-        entity.setGratuit(bo.getChargingPoint().getIsFree());
-        entity.setPaiementActe(bo.getChargingPoint().getPaymentOptions().getPayPerUse());
-        entity.setPaiementCb(bo.getChargingPoint().getPaymentOptions().getCreditCardPayment());
-        entity.setPaiementAutre(bo.getChargingPoint().getPaymentOptions().getOtherPaymentMethods());
-        entity.setTarification(bo.getChargingPoint().getPricing());
-        entity.setStationDeuxRoues(bo.getTwoWheelerStation());
-        entity.setDateMiseEnService(bo.getCommissioningDate());
-        entity.setAccessibilitePmr(bo.getAccessibility());
+        entity.setName(bo.getName());
+        entity.setAddress(bo.getAddress());
+        entity.setCoordinates(bo.getCoordinates());
+        entity.setOperatorName(bo.getOperatorName());
+        entity.setManagerName(bo.getManagerName());
+        entity.setItinerantStationId(bo.getStationDetails().getItinerantStationId());
+        entity.setLocalStationId(bo.getStationDetails().getLocalStationId());
+        entity.setImplantation(bo.getStationDetails().getImplantation());
+        entity.setNumberOfChargingPoints(bo.getStationDetails().getNumberOfChargingPoints());
+        entity.setReservationRequired(bo.getStationDetails().getReservationRequired());
+        entity.setAccessConditions(bo.getStationDetails().getAccessConditions());
+        entity.setOperatingHours(bo.getStationDetails().getOperatingHours());
+        entity.setItinerantId(bo.getChargingPoint().getItinerantId());
+        entity.setLocalId(bo.getChargingPoint().getLocalId());
+        entity.setNominalPower(bo.getChargingPoint().getNominalPower());
+        entity.setTypeEF(bo.getChargingPoint().getConnectorTypes().getTypeEF());
+        entity.setType2(bo.getChargingPoint().getConnectorTypes().getType2());
+        entity.setComboCCS(bo.getChargingPoint().getConnectorTypes().getComboCCS());
+        entity.setChademo(bo.getChargingPoint().getConnectorTypes().getChademo());
+        entity.setOther(bo.getChargingPoint().getConnectorTypes().getOther());
+        entity.setAttachedCableT2(bo.getChargingPoint().getConnectorTypes().getAttachedCableT2());
+        entity.setIsFree(bo.getChargingPoint().getIsFree());
+        entity.setPayPerUse(bo.getChargingPoint().getPaymentOptions().getPayPerUse());
+        entity.setCreditCardPayment(bo.getChargingPoint().getPaymentOptions().getCreditCardPayment());
+        entity.setOtherPaymentMethods(bo.getChargingPoint().getPaymentOptions().getOtherPaymentMethods());
+        entity.setPricing(bo.getChargingPoint().getPricing());
+        entity.setTwoWheelerStation(bo.getTwoWheelerStation());
+        entity.setCommissioningDate(bo.getCommissioningDate());
+        entity.setAccessibility(bo.getAccessibility());
         entity.setObservations(bo.getObservations());
-        entity.setDateMaj(bo.getLastUpdate());
-        entity.setConsolidatedLongitude(bo.getLocationInfo().getLongitude());
-        entity.setConsolidatedLatitude(bo.getLocationInfo().getLatitude());
-        entity.setConsolidatedCodePostal(bo.getLocationInfo().getPostalCode());
-        entity.setConsolidatedCommune(bo.getLocationInfo().getCity());
+        entity.setLastUpdate(bo.getLastUpdate());
+        entity.setLongitude(bo.getLocationInfo().getLongitude());
+        entity.setLatitude(bo.getLocationInfo().getLatitude());
+        entity.setPostalCode(bo.getLocationInfo().getPostalCode());
+        entity.setCity(bo.getLocationInfo().getCity());
         return entity;
     }
 

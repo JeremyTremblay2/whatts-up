@@ -21,113 +21,119 @@ public class ChargingStationEntity {
     private Integer id;
 
     @Column(name = "nom_amenageur")
-    private String nomAmenageur;
+    private String managerName;
 
     @Column(name = "nom_operateur")
-    private String nomOperateur;
+    private String operatorName;
 
     @Column(name = "nom_enseigne")
-    private String nomEnseigne;
+    private String brandName;
 
     @Column(name = "id_station_itinerance")
-    private String idStationItinerance;
+    private String itinerantStationId;
 
     @Column(name = "id_station_local")
-    private String idStationLocal;
+    private String localStationId;
 
     @Column(name = "nom_station")
-    private String nomStation;
+    private String name;
 
     @Column(name = "implantation_station")
-    private String implantationStation;
+    private String implantation;
 
     @Column(name = "adresse_station")
-    private String adresseStation;
+    private String address;
 
     @Column(name = "coordonneesXY")
-    private String coordonneesxy;
+    private String coordinates;
 
     @Column(name = "nbre_pdc")
-    private Integer nbrePdc;
+    private Integer numberOfChargingPoints;
 
     @Column(name = "id_pdc_itinerance")
-    private String idPdcItinerance;
+    private String itinerantId;
 
     @Column(name = "id_pdc_local")
-    private String idPdcLocal;
+    private String localId;
 
     @Column(name = "puissance_nominale")
-    private Double puissanceNominale;
+    private Double nominalPower;
 
     @Column(name = "prise_type_ef")
-    private Boolean priseTypeEf;
+    private Boolean typeEF;
 
     @Column(name = "prise_type_2")
-    private Boolean priseType2;
+    private Boolean type2;
 
     @Column(name = "prise_type_combo_ccs")
-    private Boolean priseTypeComboCcs;
+    private Boolean comboCCS;
 
     @Column(name = "prise_type_chademo")
-    private Boolean priseTypeChademo;
+    private Boolean chademo;
 
     @Column(name = "prise_type_autre")
-    private Boolean priseTypeAutre;
+    private Boolean other;
 
-    private Boolean gratuit;
+    @Column(name = "gratuit")
+    private Boolean isFree;
 
     @Column(name = "paiement_acte")
-    private Boolean paiementActe;
+    private Boolean payPerUse;
 
     @Column(name = "paiement_cb")
-    private String paiementCb;
+    private String creditCardPayment;
 
     @Column(name = "paiement_autre")
-    private Boolean paiementAutre;
+    private Boolean otherPaymentMethods;
 
-    private String tarification;
+    @Column(name = "tarification")
+    private String pricing;
 
     @Column(name = "condition_acces")
-    private String conditionAcces;
+    private String accessConditions;
 
-    private Boolean reservation;
+    @Column(name = "reservation")
+    private Boolean reservationRequired;
 
-    private String horaires;
+    @Column(name = "horaires")
+    private String operatingHours;
+
+    @Column(name = "raccordement")
+    private String connectionType;
 
     @Column(name = "accessibilite_pmr")
-    private String accessibilitePmr;
+    private String accessibility;
 
     @Column(name = "restriction_gabarit")
-    private String restrictionGabarit;
+    private String templateRestrictions;
 
     @Column(name = "station_deux_roues")
-    private Boolean stationDeuxRoues;
-
-    private String raccordement;
+    private Boolean twoWheelerStation;
 
     @Column(name = "num_pdl")
-    private String numPdl;
+    private String deliveryPointNumber;
 
     @Column(name = "date_mise_en_service")
-    private LocalDateTime dateMiseEnService;
+    private LocalDateTime commissioningDate;
 
+    @Column(name = "observations")
     private String observations;
 
     @Column(name = "date_maj")
-    private LocalDate dateMaj;
+    private LocalDate lastUpdate;
 
     @Column(name = "cable_t2_attache")
-    private Boolean cableT2Attache;
+    private Boolean attachedCableT2;
 
     @Column(name = "consolidated_longitude")
-    private Double consolidatedLongitude;
+    private Double longitude;
 
     @Column(name = "consolidated_latitude")
-    private Double consolidatedLatitude;
+    private Double latitude;
 
     @Column(name = "consolidated_code_postal")
-    private String consolidatedCodePostal;
+    private String postalCode;
 
     @Column(name = "consolidated_commune")
-    private String consolidatedCommune;
+    private String city;
 }

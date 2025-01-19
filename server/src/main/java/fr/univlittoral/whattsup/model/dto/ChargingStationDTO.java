@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 public class ChargingStationDTO {
     private Integer id;
     private String name;
+    private String brandName;
     private String address;
     private String coordinates;
     private String operatorName;

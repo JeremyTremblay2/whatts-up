@@ -1,6 +1,6 @@
 package fr.univlittoral.whattsup.configuration;
 
-import fr.univlittoral.whattsup.services.UserService;
+import fr.univlittoral.whattsup.services.AuthService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,7 +27,7 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return new UserService();
+        return new AuthService();
     }
 
     @Bean
@@ -46,6 +46,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/charging-stations/**").authenticated()
                         .requestMatchers("/api/auth/login").permitAll()
+                        .requestMatchers("/api/users/**").permitAll()
                         .requestMatchers("/swagger/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                 )
                 .httpBasic(withDefaults());

@@ -16,4 +16,5 @@ public class ChargingConnectorTypesBO {
     private Boolean chademo;
     private Boolean other;
     private Boolean attachedCableT2;
+    private String connectionType;
 }

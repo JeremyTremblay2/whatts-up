@@ -11,7 +11,7 @@ CLICKHOUSE_USER="ec_admin"
 CLICKHOUSE_PASSWORD="jk5Di!58fdG8dsC9"
 
 # sleep for 5 seconds to wait for postgres to start
-sleep 5000
+sleep 5
 
 # Vérification de l'existence du fichier CSV
 if [[ ! -f "$CSV_FILE" ]]; then
@@ -56,7 +56,7 @@ CREATE TABLE $TABLE_NAME (
     station_deux_roues Nullable(Bool),
     raccordement Nullable(String),
     num_pdl Nullable(String),
-    date_mise_en_service Nullable(DateTime),
+    date_mise_en_service Nullable(Date),
     observations Nullable(String),
     date_maj Nullable(Date),
     cable_t2_attache Nullable(Bool),

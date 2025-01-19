@@ -17,4 +17,6 @@ public class StationDetailsBO {
     private Boolean reservationRequired;
     private String accessConditions;
     private String operatingHours;
+    private String deliveryPointNumber;
+    private String templateRestrictions;
 }

@@ -15,6 +15,7 @@ import lombok.Setter;
 public class ChargingStationBO {
     private Integer id;
     private String name;
+    private String brandName;
     private String address;
     private String coordinates;
     private String operatorName;
